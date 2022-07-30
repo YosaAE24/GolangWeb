@@ -1,7 +1,9 @@
-{{template "layout" .}}
+{{template "layout" .}} 
 {{define "main"}}
 
-<div class="text">
-    {{.content}}
-</div>
+{{ range .}}
+    <div class="text box-with-shadows">
+        {{.ID }} - {{.Name }} - {{.Price }} - {{.StockStatus}}
+    </div>
+{{end}}
 {{end}}
