@@ -13,6 +13,9 @@ func main() {
 	mux.HandleFunc("/hello", hendler.HendlerHello)
 	mux.HandleFunc("/yosa", hendler.HendlerYosa)
 	mux.HandleFunc("/produc", hendler.HendlerProduc)
+	mux.HandleFunc("/post-get", hendler.PostGet)
+	mux.HandleFunc("/form", hendler.Form)
+	mux.HandleFunc("/proces", hendler.Proces)
 
 	FileServer := http.FileServer(http.Dir("assets"))
 	mux.Handle("/static/", http.StripPrefix("/static", FileServer))

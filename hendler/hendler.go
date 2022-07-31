@@ -90,3 +90,69 @@ func HendlerProduc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func PostGet(w http.ResponseWriter, r *http.Request)  {
+	method := r.Method
+
+	switch method {
+	case "GET":
+		w.Write([]byte("Ini sebuah GET"))
+	case "POST":
+		w.Write([]byte("Ini sebuah POST"))
+	default:
+		http.Error(w, "erro sedang terjadi", http.StatusBadRequest)
+	}
+}
+
+func Form(w http.ResponseWriter, r *http.Request)  {
+	if r.Method == "GET" {
+		tmpl, err := template.ParseFiles(path.Join("views", "form.html"), path.Join("views", "layout.html"))
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "error sedang terjadi", http.StatusInternalServerError)
+			return
+		}
+		
+		err = tmpl.Execute(w, nil)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "error sedang terjadi", http.StatusInternalServerError)
+			return
+		}
+	}
+	http.Error(w, "error sedang terjadi", http.StatusBadRequest)
+}
+
+func Proces(w http.ResponseWriter, r *http.Request)  {
+	if r.Method == "POST" {
+		err := r.ParseForm()
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "error sedang terjadi", http.StatusInternalServerError)
+			return
+		}
+
+		name := r.Form.Get("Name")
+		message := r.Form.Get("message")
+
+		data := map[string]interface{} {
+			"name": name,
+			"messege": message,
+		}
+
+		tmpl, err := template.ParseFiles(path.Join("views", "result.html"), path.Join("views", "layout.html"))
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "error sedang terjadi", http.StatusInternalServerError)
+			return
+		}
+
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "error sedang terjadi", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+}
